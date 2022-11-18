@@ -7,8 +7,10 @@
 function connect() {
   var url = (window.location.host == '') ? 'ws://127.0.0.1:61228/' : 'ws://production.server:61228/';
   var ws = new WebSocket(url);
+  ws.binaryType = "arraybuffer";
+  
   ws.onmessage = function(e) {
-    n = Number(e.data);
+    n = (new DataView(e.data)).getInt32(0);
     n = ((n % 360) + 360) % 360;
     document.body.style.backgroundColor = `hsl(${n} 100% 50%)`;
   };
